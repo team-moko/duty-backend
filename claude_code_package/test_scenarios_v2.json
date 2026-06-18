@@ -1,0 +1,1173 @@
+[
+  {
+    "id": "S001",
+    "type": "representative",
+    "description": "사회초년생 직장인 — 연금저축·ISA 미보유",
+    "input": {
+      "age": 26,
+      "annual_salary": 3600,
+      "income_type": "employee",
+      "invest_types": [
+        "domestic_stock",
+        "etf_domestic"
+      ],
+      "monthly_invest": 30,
+      "has_isa": false,
+      "has_pension": false,
+      "has_irp": false,
+      "pension_contribution": 0,
+      "irp_contribution": 0,
+      "financial_income": 10,
+      "risk_tolerance": "medium",
+      "has_spouse": false,
+      "has_children": false,
+      "has_minor_children": false,
+      "foreign_stock_unrealized_profit": 0,
+      "dividend_income": 5,
+      "holds_high_dividend": false
+    },
+    "output": {
+      "recommendations": [
+        {
+          "product": "연금저축펀드",
+          "category": "세액공제",
+          "priority": 5,
+          "expected_benefit_만원": 59,
+          "annual_limit_만원": 600,
+          "current_contribution_만원": 0,
+          "additional_room_만원": 600,
+          "tax_rate_applied": "16.5%",
+          "reason": "연봉 3600만원 기준 세액공제율 16.5% 적용. 현재 납입 0만원, 한도 600만원까지 600만원 여유. 360만원 추가 납입 시 약 59만원 환급.",
+          "action": "연금저축 360만원 추가 납입"
+        },
+        {
+          "product": "IRP(개인형퇴직연금)",
+          "category": "세액공제",
+          "priority": 4,
+          "expected_benefit_만원": 59,
+          "annual_combined_limit_만원": 900,
+          "current_combined_만원": 0,
+          "additional_room_만원": 900,
+          "tax_rate_applied": "16.5%",
+          "reason": "연금저축+IRP 합산 한도 900만원 중 0만원 납입 중. IRP 360만원 추가 시 약 59만원 추가 환급.",
+          "action": "IRP 360만원 추가 납입",
+          "warning": "만 55세 이전 중도인출 제한 — 여유자금만 납입"
+        },
+        {
+          "product": "ISA(서민형)",
+          "category": "비과세·분리과세",
+          "priority": 4,
+          "expected_benefit_만원": 3,
+          "annual_limit_만원": 2000,
+          "tax_free_limit_만원": 400,
+          "excess_tax_rate": "9.9%",
+          "normal_tax_rate": "15.4%",
+          "reason": "서민형 ISA 미보유. 연 수익 400만원까지 비과세, 초과분 9.9%(일반 15.4% 대비 절세). 계좌 내 손익통산으로 세금 추가 절감.",
+          "action": "ISA(서민형) 개설 후 연 최대 360만원 납입",
+          "note": "해외주식 직접 투자 불가 / 국내 상장 해외ETF는 가능 / 3년 의무 유지"
+        },
+        {
+          "product": "ETF 유형별 세금 최적화",
+          "category": "구조적 절세",
+          "priority": 3,
+          "expected_benefit_만원": null,
+          "tips": [
+            "국내주식형 ETF: 매매차익 비과세, 분배금만 15.4% — 일반 계좌 유지 유리"
+          ],
+          "reason": "ETF는 상장 위치(국내/해외)와 투자 대상(국내주식/해외주식)에 따라 세금 구조가 달라짐. 국내주식형 ETF: 매매차익 비과세. 국내상장 해외ETF: 매매차익·분배금 모두 배당소득세 15.4%. 해외상장 ETF: 매매차익 양도소득세 22%.",
+          "action": "국내주식형 ETF: 매매차익 비과세, 분배금만 15.4% — 일반 계좌 유지 유리"
+        }
+      ],
+      "total_products_recommended": 4,
+      "top_priority_product": "연금저축펀드",
+      "categories": [
+        "세액공제",
+        "비과세·분리과세",
+        "구조적 절세"
+      ]
+    }
+  },
+  {
+    "id": "S002",
+    "type": "representative",
+    "description": "중간 소득 직장인 — 연금저축 부분납입 + 미국주식 수익 大",
+    "input": {
+      "age": 35,
+      "annual_salary": 6000,
+      "income_type": "employee",
+      "invest_types": [
+        "foreign_stock",
+        "etf_foreign",
+        "domestic_stock"
+      ],
+      "monthly_invest": 100,
+      "has_isa": false,
+      "has_pension": true,
+      "has_irp": false,
+      "pension_contribution": 300,
+      "irp_contribution": 0,
+      "financial_income": 80,
+      "risk_tolerance": "high",
+      "has_spouse": true,
+      "has_children": true,
+      "has_minor_children": true,
+      "foreign_stock_unrealized_profit": 1500,
+      "dividend_income": 30,
+      "holds_high_dividend": false
+    },
+    "output": {
+      "recommendations": [
+        {
+          "product": "ISA(일반형)",
+          "category": "비과세·분리과세",
+          "priority": 5,
+          "expected_benefit_만원": 9,
+          "annual_limit_만원": 2000,
+          "tax_free_limit_만원": 200,
+          "excess_tax_rate": "9.9%",
+          "normal_tax_rate": "15.4%",
+          "reason": "일반형 ISA 미보유. 연 수익 200만원까지 비과세, 초과분 9.9%(일반 15.4% 대비 절세). 계좌 내 손익통산으로 세금 추가 절감.",
+          "action": "ISA(일반형) 개설 후 연 최대 1200만원 납입",
+          "note": "해외주식 직접 투자 불가 / 국내 상장 해외ETF는 가능 / 3년 의무 유지"
+        },
+        {
+          "product": "해외주식 연도별 분산 매도",
+          "category": "양도소득세 절세",
+          "priority": 5,
+          "expected_benefit_만원": 275,
+          "basic_deduction_만원": 250,
+          "unrealized_profit_만원": 1500,
+          "recommended_years": 6,
+          "tax_rate": "22%",
+          "reason": "미실현 수익 1500만원. 한 번에 매도 시 양도세 약 275만원. 매년 250만원씩 6년에 걸쳐 매도하면 양도세 0원 가능.",
+          "action": "연간 매도 수익을 250만원 이하로 분산 (약 6년 계획)"
+        },
+        {
+          "product": "IRP(개인형퇴직연금)",
+          "category": "세액공제",
+          "priority": 4,
+          "expected_benefit_만원": 79,
+          "annual_combined_limit_만원": 900,
+          "current_combined_만원": 300,
+          "additional_room_만원": 600,
+          "tax_rate_applied": "13.2%",
+          "reason": "연금저축+IRP 합산 한도 900만원 중 300만원 납입 중. IRP 600만원 추가 시 약 79만원 추가 환급.",
+          "action": "IRP 600만원 추가 납입",
+          "warning": "만 55세 이전 중도인출 제한 — 여유자금만 납입"
+        },
+        {
+          "product": "해외주식 손익통산 및 재매수",
+          "category": "양도소득세 절세",
+          "priority": 4,
+          "expected_benefit_만원": null,
+          "basic_deduction_만원": 250,
+          "tax_rate": "22%",
+          "reason": "수익 종목 매도 시 손실 종목을 함께 매도해 과세표준 축소 가능. 손실 종목은 즉시 재매수하여 보유 지속 가능 (세법상 문제 없음). 국내 비상장주식 손실도 해외주식 수익과 통산 가능.",
+          "action": "12월 말 전 수익·손실 종목 동시 매도로 수익 250만원 이하 조정 / 손실 종목 재매수하여 포지션 유지",
+          "warning": "결제일 기준 과세 — 12월 29일(거래일) 이전 매도 완료 필요"
+        },
+        {
+          "product": "연금저축펀드",
+          "category": "세액공제",
+          "priority": 3,
+          "expected_benefit_만원": 40,
+          "annual_limit_만원": 600,
+          "current_contribution_만원": 300,
+          "additional_room_만원": 300,
+          "tax_rate_applied": "13.2%",
+          "reason": "연봉 6000만원 기준 세액공제율 13.2% 적용. 현재 납입 300만원, 한도 600만원까지 300만원 여유. 300만원 추가 납입 시 약 40만원 환급.",
+          "action": "연금저축 300만원 추가 납입"
+        },
+        {
+          "product": "가족 증여 후 매도",
+          "category": "양도소득세 절세",
+          "priority": 3,
+          "expected_benefit_만원": null,
+          "gift_targets": [
+            {
+              "관계": "배우자",
+              "공제한도_만원": 60000,
+              "10년_합산": true
+            },
+            {
+              "관계": "자녀(미성년)",
+              "공제한도_만원": 2000,
+              "10년_합산": true
+            }
+          ],
+          "reason": "미실현 수익 1500만원 보유 주식을 가족에게 증여 후 매도 시 증여 시점 시가가 취득가액으로 재설정되어 양도세 절감 가능. 배우자 6억원, 성인자녀 5,000만원, 미성년자녀 2,000만원 10년 합산 비과세.",
+          "action": "증여 후 반드시 1년 이상 보유 후 매도 (2025년~이월과세 규정 적용)",
+          "warning": "2025년부터 증여 후 1년 이내 매도 시 이월과세 적용 — 절세 효과 소멸. 매도 대금이 증여자에게 반환되면 부당행위계산 부인 적용. 10년 합산 한도 초과 시 초과분 증여세 발생."
+        },
+        {
+          "product": "ETF 유형별 세금 최적화",
+          "category": "구조적 절세",
+          "priority": 3,
+          "expected_benefit_만원": null,
+          "tips": [
+            "국내상장 해외ETF → ISA로 이동 시 분배금 세율 15.4%→9.9%(한도 내 비과세)"
+          ],
+          "reason": "ETF는 상장 위치(국내/해외)와 투자 대상(국내주식/해외주식)에 따라 세금 구조가 달라짐. 국내주식형 ETF: 매매차익 비과세. 국내상장 해외ETF: 매매차익·분배금 모두 배당소득세 15.4%. 해외상장 ETF: 매매차익 양도소득세 22%.",
+          "action": "국내상장 해외ETF → ISA로 이동 시 분배금 세율 15.4%→9.9%(한도 내 비과세)"
+        }
+      ],
+      "total_products_recommended": 7,
+      "top_priority_product": "ISA(일반형)",
+      "categories": [
+        "비과세·분리과세",
+        "양도소득세 절세",
+        "세액공제",
+        "구조적 절세"
+      ]
+    }
+  },
+  {
+    "id": "S003",
+    "type": "representative",
+    "description": "고소득 직장인 — 연금저축+IRP 풀납입, 금융소득 종합과세 접근",
+    "input": {
+      "age": 45,
+      "annual_salary": 12000,
+      "income_type": "employee",
+      "invest_types": [
+        "foreign_stock",
+        "fund",
+        "bond",
+        "reit"
+      ],
+      "monthly_invest": 200,
+      "has_isa": true,
+      "has_pension": true,
+      "has_irp": true,
+      "pension_contribution": 600,
+      "irp_contribution": 300,
+      "financial_income": 1800,
+      "risk_tolerance": "medium",
+      "has_spouse": true,
+      "has_children": true,
+      "has_minor_children": false,
+      "foreign_stock_unrealized_profit": 3000,
+      "dividend_income": 800,
+      "holds_high_dividend": true
+    },
+    "output": {
+      "recommendations": [
+        {
+          "product": "해외주식 연도별 분산 매도",
+          "category": "양도소득세 절세",
+          "priority": 5,
+          "expected_benefit_만원": 605,
+          "basic_deduction_만원": 250,
+          "unrealized_profit_만원": 3000,
+          "recommended_years": 12,
+          "tax_rate": "22%",
+          "reason": "미실현 수익 3000만원. 한 번에 매도 시 양도세 약 605만원. 매년 250만원씩 12년에 걸쳐 매도하면 양도세 0원 가능.",
+          "action": "연간 매도 수익을 250만원 이하로 분산 (약 12년 계획)"
+        },
+        {
+          "product": "해외주식 손익통산 및 재매수",
+          "category": "양도소득세 절세",
+          "priority": 4,
+          "expected_benefit_만원": null,
+          "basic_deduction_만원": 250,
+          "tax_rate": "22%",
+          "reason": "수익 종목 매도 시 손실 종목을 함께 매도해 과세표준 축소 가능. 손실 종목은 즉시 재매수하여 보유 지속 가능 (세법상 문제 없음). 국내 비상장주식 손실도 해외주식 수익과 통산 가능.",
+          "action": "12월 말 전 수익·손실 종목 동시 매도로 수익 250만원 이하 조정 / 손실 종목 재매수하여 포지션 유지",
+          "warning": "결제일 기준 과세 — 12월 29일(거래일) 이전 매도 완료 필요"
+        },
+        {
+          "product": "가족 증여 후 매도",
+          "category": "양도소득세 절세",
+          "priority": 4,
+          "expected_benefit_만원": null,
+          "gift_targets": [
+            {
+              "관계": "배우자",
+              "공제한도_만원": 60000,
+              "10년_합산": true
+            },
+            {
+              "관계": "자녀(성인)",
+              "공제한도_만원": 5000,
+              "10년_합산": true
+            }
+          ],
+          "reason": "미실현 수익 3000만원 보유 주식을 가족에게 증여 후 매도 시 증여 시점 시가가 취득가액으로 재설정되어 양도세 절감 가능. 배우자 6억원, 성인자녀 5,000만원, 미성년자녀 2,000만원 10년 합산 비과세.",
+          "action": "증여 후 반드시 1년 이상 보유 후 매도 (2025년~이월과세 규정 적용)",
+          "warning": "2025년부터 증여 후 1년 이내 매도 시 이월과세 적용 — 절세 효과 소멸. 매도 대금이 증여자에게 반환되면 부당행위계산 부인 적용. 10년 합산 한도 초과 시 초과분 증여세 발생."
+        },
+        {
+          "product": "금융소득 종합과세 관리",
+          "category": "종합소득 관리",
+          "priority": 4,
+          "expected_benefit_만원": null,
+          "current_financial_income_만원": 1800,
+          "threshold_만원": 2000,
+          "status": "경계(주의 필요)",
+          "reason": "연 금융소득 1800만원으로 종합과세 기준 2,000만원 경계(주의 필요). 초과 시 최고 49.5% 세율 적용 가능.",
+          "action": "분리과세 상품 비중 확대(ISA 초과분 9.9%) / 2026년부터 고배당 분리과세 적극 활용 / 가족 명의 분산 투자 / 세무사 상담 권장"
+        },
+        {
+          "product": "ISA→IRP 전환",
+          "category": "세액공제 추가",
+          "priority": 3,
+          "expected_benefit_만원": 30,
+          "transfer_limit_만원": 300,
+          "additional_tax_credit_rate": "10%",
+          "reason": "ISA 만기금 IRP 이전 시 이전액의 10%(최대 300만원) 추가 세액공제.",
+          "action": "ISA 만기 시 IRP로 이전"
+        },
+        {
+          "product": "고배당주 배당소득 분리과세",
+          "category": "배당소득 분리과세",
+          "priority": 3,
+          "expected_benefit_만원": null,
+          "applicable_period": "2026년~2028년 3년 한시",
+          "separate_tax_rate": "14%",
+          "normal_max_rate": "최고 49.5%(종합과세 시)",
+          "eligible_companies": "배당성향 40% 이상 또는 배당성향 25%이상+전년比 배당 10%↑ 기업",
+          "excluded": "ETF·리츠 배당은 분리과세 대상 제외",
+          "reason": "연 배당소득 800만원. 2026~2028년 한시로 고배당 상장주 배당에 종합과세 대신 14% 분리과세 적용. 종합과세(최고 49.5%) 대비 세율 대폭 절감.",
+          "action": "배당성향 40% 이상 또는 전년 대비 배당 10% 이상 증가 상장주 중심 포트폴리오 구성 / 은행·통신 등 전통 고배당 업종 비중 확대"
+        }
+      ],
+      "total_products_recommended": 6,
+      "top_priority_product": "해외주식 연도별 분산 매도",
+      "categories": [
+        "양도소득세 절세",
+        "종합소득 관리",
+        "세액공제 추가",
+        "배당소득 분리과세"
+      ]
+    }
+  },
+  {
+    "id": "S004",
+    "type": "representative",
+    "description": "프리랜서 — ISA만 보유, 해외주식 중간 수익",
+    "input": {
+      "age": 32,
+      "annual_salary": 5000,
+      "income_type": "freelancer",
+      "invest_types": [
+        "domestic_stock",
+        "foreign_stock",
+        "fund"
+      ],
+      "monthly_invest": 50,
+      "has_isa": true,
+      "has_pension": false,
+      "has_irp": false,
+      "pension_contribution": 0,
+      "irp_contribution": 0,
+      "financial_income": 30,
+      "risk_tolerance": "medium",
+      "has_spouse": false,
+      "has_children": false,
+      "has_minor_children": false,
+      "foreign_stock_unrealized_profit": 500,
+      "dividend_income": 15,
+      "holds_high_dividend": false
+    },
+    "output": {
+      "recommendations": [
+        {
+          "product": "연금저축펀드",
+          "category": "세액공제",
+          "priority": 5,
+          "expected_benefit_만원": 99,
+          "annual_limit_만원": 600,
+          "current_contribution_만원": 0,
+          "additional_room_만원": 600,
+          "tax_rate_applied": "16.5%",
+          "reason": "연봉 5000만원 기준 세액공제율 16.5% 적용. 현재 납입 0만원, 한도 600만원까지 600만원 여유. 600만원 추가 납입 시 약 99만원 환급.",
+          "action": "연금저축 600만원 추가 납입"
+        },
+        {
+          "product": "해외주식 연도별 분산 매도",
+          "category": "양도소득세 절세",
+          "priority": 4,
+          "expected_benefit_만원": 55,
+          "basic_deduction_만원": 250,
+          "unrealized_profit_만원": 500,
+          "recommended_years": 2,
+          "tax_rate": "22%",
+          "reason": "미실현 수익 500만원. 한 번에 매도 시 양도세 약 55만원. 매년 250만원씩 2년에 걸쳐 매도하면 양도세 0원 가능.",
+          "action": "연간 매도 수익을 250만원 이하로 분산 (약 2년 계획)"
+        },
+        {
+          "product": "해외주식 손익통산 및 재매수",
+          "category": "양도소득세 절세",
+          "priority": 4,
+          "expected_benefit_만원": null,
+          "basic_deduction_만원": 250,
+          "tax_rate": "22%",
+          "reason": "수익 종목 매도 시 손실 종목을 함께 매도해 과세표준 축소 가능. 손실 종목은 즉시 재매수하여 보유 지속 가능 (세법상 문제 없음). 국내 비상장주식 손실도 해외주식 수익과 통산 가능.",
+          "action": "12월 말 전 수익·손실 종목 동시 매도로 수익 250만원 이하 조정 / 손실 종목 재매수하여 포지션 유지",
+          "warning": "결제일 기준 과세 — 12월 29일(거래일) 이전 매도 완료 필요"
+        }
+      ],
+      "total_products_recommended": 3,
+      "top_priority_product": "연금저축펀드",
+      "categories": [
+        "세액공제",
+        "양도소득세 절세"
+      ]
+    }
+  },
+  {
+    "id": "S005",
+    "type": "representative",
+    "description": "50대 직장인 — 금융소득 종합과세 경계, 고배당주 보유",
+    "input": {
+      "age": 53,
+      "annual_salary": 10000,
+      "income_type": "employee",
+      "invest_types": [
+        "bond",
+        "reit",
+        "deposit",
+        "etf_foreign",
+        "domestic_stock"
+      ],
+      "monthly_invest": 150,
+      "has_isa": false,
+      "has_pension": true,
+      "has_irp": true,
+      "pension_contribution": 600,
+      "irp_contribution": 300,
+      "financial_income": 1900,
+      "risk_tolerance": "low",
+      "has_spouse": true,
+      "has_children": true,
+      "has_minor_children": false,
+      "foreign_stock_unrealized_profit": 800,
+      "dividend_income": 1200,
+      "holds_high_dividend": true
+    },
+    "output": {
+      "recommendations": [
+        {
+          "product": "ISA(일반형)",
+          "category": "비과세·분리과세",
+          "priority": 5,
+          "expected_benefit_만원": 14,
+          "annual_limit_만원": 2000,
+          "tax_free_limit_만원": 200,
+          "excess_tax_rate": "9.9%",
+          "normal_tax_rate": "15.4%",
+          "reason": "일반형 ISA 미보유. 연 수익 200만원까지 비과세, 초과분 9.9%(일반 15.4% 대비 절세). 계좌 내 손익통산으로 세금 추가 절감.",
+          "action": "ISA(일반형) 개설 후 연 최대 1800만원 납입",
+          "note": "해외주식 직접 투자 불가 / 국내 상장 해외ETF는 가능 / 3년 의무 유지"
+        },
+        {
+          "product": "금융소득 종합과세 관리",
+          "category": "종합소득 관리",
+          "priority": 4,
+          "expected_benefit_만원": null,
+          "current_financial_income_만원": 1900,
+          "threshold_만원": 2000,
+          "status": "경계(주의 필요)",
+          "reason": "연 금융소득 1900만원으로 종합과세 기준 2,000만원 경계(주의 필요). 초과 시 최고 49.5% 세율 적용 가능.",
+          "action": "분리과세 상품 비중 확대(ISA 초과분 9.9%) / 2026년부터 고배당 분리과세 적극 활용 / 가족 명의 분산 투자 / 세무사 상담 권장"
+        },
+        {
+          "product": "고배당주 배당소득 분리과세",
+          "category": "배당소득 분리과세",
+          "priority": 3,
+          "expected_benefit_만원": null,
+          "applicable_period": "2026년~2028년 3년 한시",
+          "separate_tax_rate": "14%",
+          "normal_max_rate": "최고 49.5%(종합과세 시)",
+          "eligible_companies": "배당성향 40% 이상 또는 배당성향 25%이상+전년比 배당 10%↑ 기업",
+          "excluded": "ETF·리츠 배당은 분리과세 대상 제외",
+          "reason": "연 배당소득 1200만원. 2026~2028년 한시로 고배당 상장주 배당에 종합과세 대신 14% 분리과세 적용. 종합과세(최고 49.5%) 대비 세율 대폭 절감.",
+          "action": "배당성향 40% 이상 또는 전년 대비 배당 10% 이상 증가 상장주 중심 포트폴리오 구성 / 은행·통신 등 전통 고배당 업종 비중 확대"
+        },
+        {
+          "product": "ETF 유형별 세금 최적화",
+          "category": "구조적 절세",
+          "priority": 3,
+          "expected_benefit_만원": null,
+          "tips": [
+            "국내상장 해외ETF → ISA로 이동 시 분배금 세율 15.4%→9.9%(한도 내 비과세)"
+          ],
+          "reason": "ETF는 상장 위치(국내/해외)와 투자 대상(국내주식/해외주식)에 따라 세금 구조가 달라짐. 국내주식형 ETF: 매매차익 비과세. 국내상장 해외ETF: 매매차익·분배금 모두 배당소득세 15.4%. 해외상장 ETF: 매매차익 양도소득세 22%.",
+          "action": "국내상장 해외ETF → ISA로 이동 시 분배금 세율 15.4%→9.9%(한도 내 비과세)"
+        }
+      ],
+      "total_products_recommended": 4,
+      "top_priority_product": "ISA(일반형)",
+      "categories": [
+        "비과세·분리과세",
+        "종합소득 관리",
+        "배당소득 분리과세",
+        "구조적 절세"
+      ]
+    }
+  },
+  {
+    "id": "S006",
+    "type": "representative",
+    "description": "무소득 전업주부 — 해외주식 미실현 수익 큰 상태",
+    "input": {
+      "age": 38,
+      "annual_salary": 0,
+      "income_type": "none",
+      "invest_types": [
+        "foreign_stock",
+        "etf_foreign"
+      ],
+      "monthly_invest": 50,
+      "has_isa": false,
+      "has_pension": false,
+      "has_irp": false,
+      "pension_contribution": 0,
+      "irp_contribution": 0,
+      "financial_income": 50,
+      "risk_tolerance": "high",
+      "has_spouse": true,
+      "has_children": true,
+      "has_minor_children": true,
+      "foreign_stock_unrealized_profit": 2000,
+      "dividend_income": 20,
+      "holds_high_dividend": false
+    },
+    "output": {
+      "recommendations": [
+        {
+          "product": "ISA(서민형)",
+          "category": "비과세·분리과세",
+          "priority": 5,
+          "expected_benefit_만원": 5,
+          "annual_limit_만원": 2000,
+          "tax_free_limit_만원": 400,
+          "excess_tax_rate": "9.9%",
+          "normal_tax_rate": "15.4%",
+          "reason": "서민형 ISA 미보유. 연 수익 400만원까지 비과세, 초과분 9.9%(일반 15.4% 대비 절세). 계좌 내 손익통산으로 세금 추가 절감.",
+          "action": "ISA(서민형) 개설 후 연 최대 600만원 납입",
+          "note": "해외주식 직접 투자 불가 / 국내 상장 해외ETF는 가능 / 3년 의무 유지"
+        },
+        {
+          "product": "해외주식 연도별 분산 매도",
+          "category": "양도소득세 절세",
+          "priority": 5,
+          "expected_benefit_만원": 385,
+          "basic_deduction_만원": 250,
+          "unrealized_profit_만원": 2000,
+          "recommended_years": 8,
+          "tax_rate": "22%",
+          "reason": "미실현 수익 2000만원. 한 번에 매도 시 양도세 약 385만원. 매년 250만원씩 8년에 걸쳐 매도하면 양도세 0원 가능.",
+          "action": "연간 매도 수익을 250만원 이하로 분산 (약 8년 계획)"
+        },
+        {
+          "product": "해외주식 손익통산 및 재매수",
+          "category": "양도소득세 절세",
+          "priority": 4,
+          "expected_benefit_만원": null,
+          "basic_deduction_만원": 250,
+          "tax_rate": "22%",
+          "reason": "수익 종목 매도 시 손실 종목을 함께 매도해 과세표준 축소 가능. 손실 종목은 즉시 재매수하여 보유 지속 가능 (세법상 문제 없음). 국내 비상장주식 손실도 해외주식 수익과 통산 가능.",
+          "action": "12월 말 전 수익·손실 종목 동시 매도로 수익 250만원 이하 조정 / 손실 종목 재매수하여 포지션 유지",
+          "warning": "결제일 기준 과세 — 12월 29일(거래일) 이전 매도 완료 필요"
+        },
+        {
+          "product": "가족 증여 후 매도",
+          "category": "양도소득세 절세",
+          "priority": 3,
+          "expected_benefit_만원": null,
+          "gift_targets": [
+            {
+              "관계": "배우자",
+              "공제한도_만원": 60000,
+              "10년_합산": true
+            },
+            {
+              "관계": "자녀(미성년)",
+              "공제한도_만원": 2000,
+              "10년_합산": true
+            }
+          ],
+          "reason": "미실현 수익 2000만원 보유 주식을 가족에게 증여 후 매도 시 증여 시점 시가가 취득가액으로 재설정되어 양도세 절감 가능. 배우자 6억원, 성인자녀 5,000만원, 미성년자녀 2,000만원 10년 합산 비과세.",
+          "action": "증여 후 반드시 1년 이상 보유 후 매도 (2025년~이월과세 규정 적용)",
+          "warning": "2025년부터 증여 후 1년 이내 매도 시 이월과세 적용 — 절세 효과 소멸. 매도 대금이 증여자에게 반환되면 부당행위계산 부인 적용. 10년 합산 한도 초과 시 초과분 증여세 발생."
+        },
+        {
+          "product": "ETF 유형별 세금 최적화",
+          "category": "구조적 절세",
+          "priority": 3,
+          "expected_benefit_만원": null,
+          "tips": [
+            "국내상장 해외ETF → ISA로 이동 시 분배금 세율 15.4%→9.9%(한도 내 비과세)"
+          ],
+          "reason": "ETF는 상장 위치(국내/해외)와 투자 대상(국내주식/해외주식)에 따라 세금 구조가 달라짐. 국내주식형 ETF: 매매차익 비과세. 국내상장 해외ETF: 매매차익·분배금 모두 배당소득세 15.4%. 해외상장 ETF: 매매차익 양도소득세 22%.",
+          "action": "국내상장 해외ETF → ISA로 이동 시 분배금 세율 15.4%→9.9%(한도 내 비과세)"
+        }
+      ],
+      "total_products_recommended": 5,
+      "top_priority_product": "ISA(서민형)",
+      "categories": [
+        "비과세·분리과세",
+        "양도소득세 절세",
+        "구조적 절세"
+      ]
+    }
+  },
+  {
+    "id": "S007",
+    "type": "representative",
+    "description": "서민형 ISA 대상 저소득 직장인",
+    "input": {
+      "age": 29,
+      "annual_salary": 3000,
+      "income_type": "employee",
+      "invest_types": [
+        "deposit",
+        "domestic_stock"
+      ],
+      "monthly_invest": 20,
+      "has_isa": false,
+      "has_pension": false,
+      "has_irp": false,
+      "pension_contribution": 0,
+      "irp_contribution": 0,
+      "financial_income": 5,
+      "risk_tolerance": "low",
+      "has_spouse": false,
+      "has_children": false,
+      "has_minor_children": false,
+      "foreign_stock_unrealized_profit": 0,
+      "dividend_income": 2,
+      "holds_high_dividend": false
+    },
+    "output": {
+      "recommendations": [
+        {
+          "product": "연금저축펀드",
+          "category": "세액공제",
+          "priority": 5,
+          "expected_benefit_만원": 40,
+          "annual_limit_만원": 600,
+          "current_contribution_만원": 0,
+          "additional_room_만원": 600,
+          "tax_rate_applied": "16.5%",
+          "reason": "연봉 3000만원 기준 세액공제율 16.5% 적용. 현재 납입 0만원, 한도 600만원까지 600만원 여유. 240만원 추가 납입 시 약 40만원 환급.",
+          "action": "연금저축 240만원 추가 납입"
+        },
+        {
+          "product": "IRP(개인형퇴직연금)",
+          "category": "세액공제",
+          "priority": 4,
+          "expected_benefit_만원": 40,
+          "annual_combined_limit_만원": 900,
+          "current_combined_만원": 0,
+          "additional_room_만원": 900,
+          "tax_rate_applied": "16.5%",
+          "reason": "연금저축+IRP 합산 한도 900만원 중 0만원 납입 중. IRP 240만원 추가 시 약 40만원 추가 환급.",
+          "action": "IRP 240만원 추가 납입",
+          "warning": "만 55세 이전 중도인출 제한 — 여유자금만 납입"
+        },
+        {
+          "product": "ISA(서민형)",
+          "category": "비과세·분리과세",
+          "priority": 4,
+          "expected_benefit_만원": 2,
+          "annual_limit_만원": 2000,
+          "tax_free_limit_만원": 400,
+          "excess_tax_rate": "9.9%",
+          "normal_tax_rate": "15.4%",
+          "reason": "서민형 ISA 미보유. 연 수익 400만원까지 비과세, 초과분 9.9%(일반 15.4% 대비 절세). 계좌 내 손익통산으로 세금 추가 절감.",
+          "action": "ISA(서민형) 개설 후 연 최대 240만원 납입",
+          "note": "해외주식 직접 투자 불가 / 국내 상장 해외ETF는 가능 / 3년 의무 유지"
+        }
+      ],
+      "total_products_recommended": 3,
+      "top_priority_product": "연금저축펀드",
+      "categories": [
+        "세액공제",
+        "비과세·분리과세"
+      ]
+    }
+  },
+  {
+    "id": "S008",
+    "type": "representative",
+    "description": "고소득 프리랜서 — 금융소득 종합과세자, 고배당 포트폴리오",
+    "input": {
+      "age": 44,
+      "annual_salary": 8000,
+      "income_type": "freelancer",
+      "invest_types": [
+        "foreign_stock",
+        "reit",
+        "bond",
+        "etf_domestic"
+      ],
+      "monthly_invest": 150,
+      "has_isa": false,
+      "has_pension": true,
+      "has_irp": false,
+      "pension_contribution": 400,
+      "irp_contribution": 0,
+      "financial_income": 2500,
+      "risk_tolerance": "medium",
+      "has_spouse": true,
+      "has_children": true,
+      "has_minor_children": false,
+      "foreign_stock_unrealized_profit": 1200,
+      "dividend_income": 1800,
+      "holds_high_dividend": true
+    },
+    "output": {
+      "recommendations": [
+        {
+          "product": "해외주식 연도별 분산 매도",
+          "category": "양도소득세 절세",
+          "priority": 5,
+          "expected_benefit_만원": 209,
+          "basic_deduction_만원": 250,
+          "unrealized_profit_만원": 1200,
+          "recommended_years": 5,
+          "tax_rate": "22%",
+          "reason": "미실현 수익 1200만원. 한 번에 매도 시 양도세 약 209만원. 매년 250만원씩 5년에 걸쳐 매도하면 양도세 0원 가능.",
+          "action": "연간 매도 수익을 250만원 이하로 분산 (약 5년 계획)"
+        },
+        {
+          "product": "금융소득 종합과세 관리",
+          "category": "종합소득 관리",
+          "priority": 5,
+          "expected_benefit_만원": null,
+          "current_financial_income_만원": 2500,
+          "threshold_만원": 2000,
+          "status": "초과(종합과세 대상)",
+          "reason": "연 금융소득 2500만원으로 종합과세 기준 2,000만원 초과(종합과세 대상). 초과 시 최고 49.5% 세율 적용 가능.",
+          "action": "분리과세 상품 비중 확대(ISA 초과분 9.9%) / 2026년부터 고배당 분리과세 적극 활용 / 가족 명의 분산 투자 / 세무사 상담 권장"
+        },
+        {
+          "product": "해외주식 손익통산 및 재매수",
+          "category": "양도소득세 절세",
+          "priority": 4,
+          "expected_benefit_만원": null,
+          "basic_deduction_만원": 250,
+          "tax_rate": "22%",
+          "reason": "수익 종목 매도 시 손실 종목을 함께 매도해 과세표준 축소 가능. 손실 종목은 즉시 재매수하여 보유 지속 가능 (세법상 문제 없음). 국내 비상장주식 손실도 해외주식 수익과 통산 가능.",
+          "action": "12월 말 전 수익·손실 종목 동시 매도로 수익 250만원 이하 조정 / 손실 종목 재매수하여 포지션 유지",
+          "warning": "결제일 기준 과세 — 12월 29일(거래일) 이전 매도 완료 필요"
+        },
+        {
+          "product": "고배당주 배당소득 분리과세",
+          "category": "배당소득 분리과세",
+          "priority": 4,
+          "expected_benefit_만원": null,
+          "applicable_period": "2026년~2028년 3년 한시",
+          "separate_tax_rate": "14%",
+          "normal_max_rate": "최고 49.5%(종합과세 시)",
+          "eligible_companies": "배당성향 40% 이상 또는 배당성향 25%이상+전년比 배당 10%↑ 기업",
+          "excluded": "ETF·리츠 배당은 분리과세 대상 제외",
+          "reason": "연 배당소득 1800만원. 2026~2028년 한시로 고배당 상장주 배당에 종합과세 대신 14% 분리과세 적용. 종합과세(최고 49.5%) 대비 세율 대폭 절감.",
+          "action": "배당성향 40% 이상 또는 전년 대비 배당 10% 이상 증가 상장주 중심 포트폴리오 구성 / 은행·통신 등 전통 고배당 업종 비중 확대"
+        },
+        {
+          "product": "연금저축펀드",
+          "category": "세액공제",
+          "priority": 3,
+          "expected_benefit_만원": 26,
+          "annual_limit_만원": 600,
+          "current_contribution_만원": 400,
+          "additional_room_만원": 200,
+          "tax_rate_applied": "13.2%",
+          "reason": "연봉 8000만원 기준 세액공제율 13.2% 적용. 현재 납입 400만원, 한도 600만원까지 200만원 여유. 200만원 추가 납입 시 약 26만원 환급.",
+          "action": "연금저축 200만원 추가 납입"
+        },
+        {
+          "product": "가족 증여 후 매도",
+          "category": "양도소득세 절세",
+          "priority": 3,
+          "expected_benefit_만원": null,
+          "gift_targets": [
+            {
+              "관계": "배우자",
+              "공제한도_만원": 60000,
+              "10년_합산": true
+            },
+            {
+              "관계": "자녀(성인)",
+              "공제한도_만원": 5000,
+              "10년_합산": true
+            }
+          ],
+          "reason": "미실현 수익 1200만원 보유 주식을 가족에게 증여 후 매도 시 증여 시점 시가가 취득가액으로 재설정되어 양도세 절감 가능. 배우자 6억원, 성인자녀 5,000만원, 미성년자녀 2,000만원 10년 합산 비과세.",
+          "action": "증여 후 반드시 1년 이상 보유 후 매도 (2025년~이월과세 규정 적용)",
+          "warning": "2025년부터 증여 후 1년 이내 매도 시 이월과세 적용 — 절세 효과 소멸. 매도 대금이 증여자에게 반환되면 부당행위계산 부인 적용. 10년 합산 한도 초과 시 초과분 증여세 발생."
+        },
+        {
+          "product": "ETF 유형별 세금 최적화",
+          "category": "구조적 절세",
+          "priority": 3,
+          "expected_benefit_만원": null,
+          "tips": [
+            "국내주식형 ETF: 매매차익 비과세, 분배금만 15.4% — 일반 계좌 유지 유리"
+          ],
+          "reason": "ETF는 상장 위치(국내/해외)와 투자 대상(국내주식/해외주식)에 따라 세금 구조가 달라짐. 국내주식형 ETF: 매매차익 비과세. 국내상장 해외ETF: 매매차익·분배금 모두 배당소득세 15.4%. 해외상장 ETF: 매매차익 양도소득세 22%.",
+          "action": "국내주식형 ETF: 매매차익 비과세, 분배금만 15.4% — 일반 계좌 유지 유리"
+        }
+      ],
+      "total_products_recommended": 7,
+      "top_priority_product": "해외주식 연도별 분산 매도",
+      "categories": [
+        "양도소득세 절세",
+        "종합소득 관리",
+        "배당소득 분리과세",
+        "세액공제",
+        "구조적 절세"
+      ]
+    }
+  },
+  {
+    "id": "S009",
+    "type": "representative",
+    "description": "30대 맞벌이 — 미국주식 수익 크고 배우자 증여 고려",
+    "input": {
+      "age": 37,
+      "annual_salary": 7000,
+      "income_type": "employee",
+      "invest_types": [
+        "foreign_stock",
+        "etf_foreign"
+      ],
+      "monthly_invest": 120,
+      "has_isa": false,
+      "has_pension": true,
+      "has_irp": true,
+      "pension_contribution": 600,
+      "irp_contribution": 300,
+      "financial_income": 120,
+      "risk_tolerance": "high",
+      "has_spouse": true,
+      "has_children": false,
+      "has_minor_children": false,
+      "foreign_stock_unrealized_profit": 4000,
+      "dividend_income": 50,
+      "holds_high_dividend": false
+    },
+    "output": {
+      "recommendations": [
+        {
+          "product": "ISA(일반형)",
+          "category": "비과세·분리과세",
+          "priority": 5,
+          "expected_benefit_만원": 11,
+          "annual_limit_만원": 2000,
+          "tax_free_limit_만원": 200,
+          "excess_tax_rate": "9.9%",
+          "normal_tax_rate": "15.4%",
+          "reason": "일반형 ISA 미보유. 연 수익 200만원까지 비과세, 초과분 9.9%(일반 15.4% 대비 절세). 계좌 내 손익통산으로 세금 추가 절감.",
+          "action": "ISA(일반형) 개설 후 연 최대 1440만원 납입",
+          "note": "해외주식 직접 투자 불가 / 국내 상장 해외ETF는 가능 / 3년 의무 유지"
+        },
+        {
+          "product": "해외주식 연도별 분산 매도",
+          "category": "양도소득세 절세",
+          "priority": 5,
+          "expected_benefit_만원": 825,
+          "basic_deduction_만원": 250,
+          "unrealized_profit_만원": 4000,
+          "recommended_years": 16,
+          "tax_rate": "22%",
+          "reason": "미실현 수익 4000만원. 한 번에 매도 시 양도세 약 825만원. 매년 250만원씩 16년에 걸쳐 매도하면 양도세 0원 가능.",
+          "action": "연간 매도 수익을 250만원 이하로 분산 (약 16년 계획)"
+        },
+        {
+          "product": "해외주식 손익통산 및 재매수",
+          "category": "양도소득세 절세",
+          "priority": 4,
+          "expected_benefit_만원": null,
+          "basic_deduction_만원": 250,
+          "tax_rate": "22%",
+          "reason": "수익 종목 매도 시 손실 종목을 함께 매도해 과세표준 축소 가능. 손실 종목은 즉시 재매수하여 보유 지속 가능 (세법상 문제 없음). 국내 비상장주식 손실도 해외주식 수익과 통산 가능.",
+          "action": "12월 말 전 수익·손실 종목 동시 매도로 수익 250만원 이하 조정 / 손실 종목 재매수하여 포지션 유지",
+          "warning": "결제일 기준 과세 — 12월 29일(거래일) 이전 매도 완료 필요"
+        },
+        {
+          "product": "가족 증여 후 매도",
+          "category": "양도소득세 절세",
+          "priority": 4,
+          "expected_benefit_만원": null,
+          "gift_targets": [
+            {
+              "관계": "배우자",
+              "공제한도_만원": 60000,
+              "10년_합산": true
+            }
+          ],
+          "reason": "미실현 수익 4000만원 보유 주식을 가족에게 증여 후 매도 시 증여 시점 시가가 취득가액으로 재설정되어 양도세 절감 가능. 배우자 6억원, 성인자녀 5,000만원, 미성년자녀 2,000만원 10년 합산 비과세.",
+          "action": "증여 후 반드시 1년 이상 보유 후 매도 (2025년~이월과세 규정 적용)",
+          "warning": "2025년부터 증여 후 1년 이내 매도 시 이월과세 적용 — 절세 효과 소멸. 매도 대금이 증여자에게 반환되면 부당행위계산 부인 적용. 10년 합산 한도 초과 시 초과분 증여세 발생."
+        },
+        {
+          "product": "ETF 유형별 세금 최적화",
+          "category": "구조적 절세",
+          "priority": 3,
+          "expected_benefit_만원": null,
+          "tips": [
+            "국내상장 해외ETF → ISA로 이동 시 분배금 세율 15.4%→9.9%(한도 내 비과세)"
+          ],
+          "reason": "ETF는 상장 위치(국내/해외)와 투자 대상(국내주식/해외주식)에 따라 세금 구조가 달라짐. 국내주식형 ETF: 매매차익 비과세. 국내상장 해외ETF: 매매차익·분배금 모두 배당소득세 15.4%. 해외상장 ETF: 매매차익 양도소득세 22%.",
+          "action": "국내상장 해외ETF → ISA로 이동 시 분배금 세율 15.4%→9.9%(한도 내 비과세)"
+        }
+      ],
+      "total_products_recommended": 5,
+      "top_priority_product": "ISA(일반형)",
+      "categories": [
+        "비과세·분리과세",
+        "양도소득세 절세",
+        "구조적 절세"
+      ]
+    }
+  },
+  {
+    "id": "S010",
+    "type": "representative",
+    "description": "40대 — ETF 혼합 보유(국내주식형+국내상장해외형), 세금 구조 최적화 필요",
+    "input": {
+      "age": 42,
+      "annual_salary": 8000,
+      "income_type": "employee",
+      "invest_types": [
+        "etf_domestic",
+        "etf_foreign",
+        "fund"
+      ],
+      "monthly_invest": 80,
+      "has_isa": false,
+      "has_pension": true,
+      "has_irp": false,
+      "pension_contribution": 400,
+      "irp_contribution": 0,
+      "financial_income": 200,
+      "risk_tolerance": "medium",
+      "has_spouse": true,
+      "has_children": true,
+      "has_minor_children": false,
+      "foreign_stock_unrealized_profit": 0,
+      "dividend_income": 100,
+      "holds_high_dividend": false
+    },
+    "output": {
+      "recommendations": [
+        {
+          "product": "ISA(일반형)",
+          "category": "비과세·분리과세",
+          "priority": 5,
+          "expected_benefit_만원": 7,
+          "annual_limit_만원": 2000,
+          "tax_free_limit_만원": 200,
+          "excess_tax_rate": "9.9%",
+          "normal_tax_rate": "15.4%",
+          "reason": "일반형 ISA 미보유. 연 수익 200만원까지 비과세, 초과분 9.9%(일반 15.4% 대비 절세). 계좌 내 손익통산으로 세금 추가 절감.",
+          "action": "ISA(일반형) 개설 후 연 최대 960만원 납입",
+          "note": "해외주식 직접 투자 불가 / 국내 상장 해외ETF는 가능 / 3년 의무 유지"
+        },
+        {
+          "product": "IRP(개인형퇴직연금)",
+          "category": "세액공제",
+          "priority": 4,
+          "expected_benefit_만원": 66,
+          "annual_combined_limit_만원": 900,
+          "current_combined_만원": 400,
+          "additional_room_만원": 500,
+          "tax_rate_applied": "13.2%",
+          "reason": "연금저축+IRP 합산 한도 900만원 중 400만원 납입 중. IRP 500만원 추가 시 약 66만원 추가 환급.",
+          "action": "IRP 500만원 추가 납입",
+          "warning": "만 55세 이전 중도인출 제한 — 여유자금만 납입"
+        },
+        {
+          "product": "연금저축펀드",
+          "category": "세액공제",
+          "priority": 3,
+          "expected_benefit_만원": 26,
+          "annual_limit_만원": 600,
+          "current_contribution_만원": 400,
+          "additional_room_만원": 200,
+          "tax_rate_applied": "13.2%",
+          "reason": "연봉 8000만원 기준 세액공제율 13.2% 적용. 현재 납입 400만원, 한도 600만원까지 200만원 여유. 200만원 추가 납입 시 약 26만원 환급.",
+          "action": "연금저축 200만원 추가 납입"
+        },
+        {
+          "product": "ETF 유형별 세금 최적화",
+          "category": "구조적 절세",
+          "priority": 3,
+          "expected_benefit_만원": null,
+          "tips": [
+            "국내상장 해외ETF → ISA로 이동 시 분배금 세율 15.4%→9.9%(한도 내 비과세)",
+            "국내주식형 ETF: 매매차익 비과세, 분배금만 15.4% — 일반 계좌 유지 유리"
+          ],
+          "reason": "ETF는 상장 위치(국내/해외)와 투자 대상(국내주식/해외주식)에 따라 세금 구조가 달라짐. 국내주식형 ETF: 매매차익 비과세. 국내상장 해외ETF: 매매차익·분배금 모두 배당소득세 15.4%. 해외상장 ETF: 매매차익 양도소득세 22%.",
+          "action": "국내상장 해외ETF → ISA로 이동 시 분배금 세율 15.4%→9.9%(한도 내 비과세) / 국내주식형 ETF: 매매차익 비과세, 분배금만 15.4% — 일반 계좌 유지 유리"
+        }
+      ],
+      "total_products_recommended": 4,
+      "top_priority_product": "ISA(일반형)",
+      "categories": [
+        "비과세·분리과세",
+        "세액공제",
+        "구조적 절세"
+      ]
+    }
+  },
+  {
+    "id": "S011",
+    "type": "representative",
+    "description": "금융소득 종합과세자 — 고배당 분리과세 최대 활용",
+    "input": {
+      "age": 55,
+      "annual_salary": 15000,
+      "income_type": "employee",
+      "invest_types": [
+        "domestic_stock",
+        "reit",
+        "bond"
+      ],
+      "monthly_invest": 300,
+      "has_isa": true,
+      "has_pension": true,
+      "has_irp": true,
+      "pension_contribution": 600,
+      "irp_contribution": 300,
+      "financial_income": 3500,
+      "risk_tolerance": "low",
+      "has_spouse": true,
+      "has_children": true,
+      "has_minor_children": false,
+      "foreign_stock_unrealized_profit": 0,
+      "dividend_income": 2800,
+      "holds_high_dividend": true
+    },
+    "output": {
+      "recommendations": [
+        {
+          "product": "금융소득 종합과세 관리",
+          "category": "종합소득 관리",
+          "priority": 5,
+          "expected_benefit_만원": null,
+          "current_financial_income_만원": 3500,
+          "threshold_만원": 2000,
+          "status": "초과(종합과세 대상)",
+          "reason": "연 금융소득 3500만원으로 종합과세 기준 2,000만원 초과(종합과세 대상). 초과 시 최고 49.5% 세율 적용 가능.",
+          "action": "분리과세 상품 비중 확대(ISA 초과분 9.9%) / 2026년부터 고배당 분리과세 적극 활용 / 가족 명의 분산 투자 / 세무사 상담 권장"
+        },
+        {
+          "product": "고배당주 배당소득 분리과세",
+          "category": "배당소득 분리과세",
+          "priority": 4,
+          "expected_benefit_만원": null,
+          "applicable_period": "2026년~2028년 3년 한시",
+          "separate_tax_rate": "20%",
+          "normal_max_rate": "최고 49.5%(종합과세 시)",
+          "eligible_companies": "배당성향 40% 이상 또는 배당성향 25%이상+전년比 배당 10%↑ 기업",
+          "excluded": "ETF·리츠 배당은 분리과세 대상 제외",
+          "reason": "연 배당소득 2800만원. 2026~2028년 한시로 고배당 상장주 배당에 종합과세 대신 20% 분리과세 적용. 종합과세(최고 49.5%) 대비 세율 대폭 절감.",
+          "action": "배당성향 40% 이상 또는 전년 대비 배당 10% 이상 증가 상장주 중심 포트폴리오 구성 / 은행·통신 등 전통 고배당 업종 비중 확대"
+        }
+      ],
+      "total_products_recommended": 2,
+      "top_priority_product": "금융소득 종합과세 관리",
+      "categories": [
+        "종합소득 관리",
+        "배당소득 분리과세"
+      ]
+    }
+  },
+  {
+    "id": "S012",
+    "type": "representative",
+    "description": "20대 미성년 자녀 보유 — 자녀 주식 증여 절세 계획",
+    "input": {
+      "age": 40,
+      "annual_salary": 9000,
+      "income_type": "employee",
+      "invest_types": [
+        "foreign_stock",
+        "domestic_stock"
+      ],
+      "monthly_invest": 100,
+      "has_isa": true,
+      "has_pension": true,
+      "has_irp": true,
+      "pension_contribution": 600,
+      "irp_contribution": 300,
+      "financial_income": 150,
+      "risk_tolerance": "medium",
+      "has_spouse": true,
+      "has_children": true,
+      "has_minor_children": true,
+      "foreign_stock_unrealized_profit": 2500,
+      "dividend_income": 80,
+      "holds_high_dividend": false
+    },
+    "output": {
+      "recommendations": [
+        {
+          "product": "해외주식 연도별 분산 매도",
+          "category": "양도소득세 절세",
+          "priority": 5,
+          "expected_benefit_만원": 495,
+          "basic_deduction_만원": 250,
+          "unrealized_profit_만원": 2500,
+          "recommended_years": 10,
+          "tax_rate": "22%",
+          "reason": "미실현 수익 2500만원. 한 번에 매도 시 양도세 약 495만원. 매년 250만원씩 10년에 걸쳐 매도하면 양도세 0원 가능.",
+          "action": "연간 매도 수익을 250만원 이하로 분산 (약 10년 계획)"
+        },
+        {
+          "product": "해외주식 손익통산 및 재매수",
+          "category": "양도소득세 절세",
+          "priority": 4,
+          "expected_benefit_만원": null,
+          "basic_deduction_만원": 250,
+          "tax_rate": "22%",
+          "reason": "수익 종목 매도 시 손실 종목을 함께 매도해 과세표준 축소 가능. 손실 종목은 즉시 재매수하여 보유 지속 가능 (세법상 문제 없음). 국내 비상장주식 손실도 해외주식 수익과 통산 가능.",
+          "action": "12월 말 전 수익·손실 종목 동시 매도로 수익 250만원 이하 조정 / 손실 종목 재매수하여 포지션 유지",
+          "warning": "결제일 기준 과세 — 12월 29일(거래일) 이전 매도 완료 필요"
+        },
+        {
+          "product": "가족 증여 후 매도",
+          "category": "양도소득세 절세",
+          "priority": 4,
+          "expected_benefit_만원": null,
+          "gift_targets": [
+            {
+              "관계": "배우자",
+              "공제한도_만원": 60000,
+              "10년_합산": true
+            },
+            {
+              "관계": "자녀(미성년)",
+              "공제한도_만원": 2000,
+              "10년_합산": true
+            }
+          ],
+          "reason": "미실현 수익 2500만원 보유 주식을 가족에게 증여 후 매도 시 증여 시점 시가가 취득가액으로 재설정되어 양도세 절감 가능. 배우자 6억원, 성인자녀 5,000만원, 미성년자녀 2,000만원 10년 합산 비과세.",
+          "action": "증여 후 반드시 1년 이상 보유 후 매도 (2025년~이월과세 규정 적용)",
+          "warning": "2025년부터 증여 후 1년 이내 매도 시 이월과세 적용 — 절세 효과 소멸. 매도 대금이 증여자에게 반환되면 부당행위계산 부인 적용. 10년 합산 한도 초과 시 초과분 증여세 발생."
+        },
+        {
+          "product": "ISA→IRP 전환",
+          "category": "세액공제 추가",
+          "priority": 3,
+          "expected_benefit_만원": 30,
+          "transfer_limit_만원": 300,
+          "additional_tax_credit_rate": "10%",
+          "reason": "ISA 만기금 IRP 이전 시 이전액의 10%(최대 300만원) 추가 세액공제.",
+          "action": "ISA 만기 시 IRP로 이전"
+        }
+      ],
+      "total_products_recommended": 4,
+      "top_priority_product": "해외주식 연도별 분산 매도",
+      "categories": [
+        "양도소득세 절세",
+        "세액공제 추가"
+      ]
+    }
+  }
+]
