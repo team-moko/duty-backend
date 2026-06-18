@@ -1,0 +1,16 @@
+node_modules
+dist
+coverage
+tests
+.git
+.gitignore
+.omc
+.claude
+.env
+.env.local
+.DS_Store
+*.log
+README.md
+PROMPT.md
+SPEC.md
+claude_code_package

@@ -133,3 +133,29 @@ score = 예상_절세금액(만원) × 긴급도_가중치 × SCORE_SCALE(=10)
 ## CORS
 
 개발 환경 기본 설정으로 `origin: '*'` 입니다. 프로덕션 배포 시 `src/server.ts` 의 CORS 설정을 명시 도메인으로 제한하세요.
+
+## 배포
+
+### Railway
+
+`Dockerfile` 과 `railway.json` 이 포함되어 있습니다. Railway 가 자동으로 Dockerfile 빌드를 사용합니다.
+
+> Nixpacks 빌더는 `npm ci` 실행 중 `node_modules/.cache` 락 이슈(EBUSY)가 알려져 있어 **Dockerfile 빌드를 권장**합니다.
+
+**Railway 환경변수**:
+
+| Key | Value | 설명 |
+|-----|-------|------|
+| `NODE_ENV` | `production` | `/mock` 비활성화 + CORS 가드 활성화 |
+| `ALLOWED_ORIGIN` | `https://your-frontend.example.com` | 프로덕션 CORS 허용 origin. 미설정 시 same-origin 만 통과 |
+| `PORT` | (Railway 가 자동 주입) | `1-65535` 정수 |
+
+헬스체크 경로 `/health` 가 `railway.json` 에 설정되어 있으며 30초 timeout 으로 동작합니다.
+
+### 로컬에서 Docker 빌드/실행 확인
+
+```bash
+docker build -t duty-backend .
+docker run --rm -p 8000:8000 -e NODE_ENV=development duty-backend
+# → http://localhost:8000/docs
+```
