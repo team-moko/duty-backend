@@ -1,5 +1,7 @@
 import cors from 'cors';
 import express, { ErrorRequestHandler, Express } from 'express';
+import swaggerUi from 'swagger-ui-express';
+import { getOpenApiDocument } from './openapi';
 import { recommendRouter } from './routes/recommend';
 
 /**
@@ -20,6 +22,26 @@ export function createApp(): Express {
 
   app.use(cors({ origin: resolveCorsOrigin() }));
   app.use(express.json({ limit: '1mb' }));
+
+  // /docs 와 /openapi.json 은 의도적으로 NODE_ENV 게이팅을 적용하지 않습니다.
+  // 이 API 는 내부 도구 + 프론트 개발 협업을 전제로 한 dev-phase 서비스이므로
+  // 문서 노출의 이점이 surface-disclosure 위험을 상회합니다. 외부 공개 시
+  // 게이팅이 필요하다면 아래 두 라우트 앞에 `if (NODE_ENV === 'production') return 404`
+  // 가드를 추가하세요 (routes/recommend.ts:/mock 패턴 참고).
+  app.get('/openapi.json', (_req, res) => {
+    res.status(200).json(getOpenApiDocument());
+  });
+  app.use(
+    '/docs',
+    swaggerUi.serve,
+    swaggerUi.setup(getOpenApiDocument(), {
+      customSiteTitle: 'duty-backend API Docs',
+      swaggerOptions: {
+        docExpansion: 'list',
+        defaultModelsExpandDepth: 1,
+      },
+    })
+  );
 
   app.use(recommendRouter);
 

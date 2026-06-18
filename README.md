@@ -53,7 +53,13 @@ npm run typecheck
 |--------|------|------|
 | `POST` | `/recommend` | `UserProfile` 입력 → `RecommendResponse` (Top 5) |
 | `GET` | `/health` | `{ "status": "ok" }` |
-| `GET` | `/mock` | 프론트 개발용 고정 Mock 응답 |
+| `GET` | `/mock` | 프론트 개발용 고정 Mock 응답 (production 에선 404) |
+| `GET` | `/docs` | Swagger UI — 인터랙티브 API 문서 |
+| `GET` | `/openapi.json` | OpenAPI 3.0 spec (Zod 스키마 자동 변환) |
+
+### API 문서
+
+서버를 띄운 뒤 브라우저에서 [`http://localhost:8000/docs`](http://localhost:8000/docs) 접속. Zod 스키마(`src/models.ts`)가 단일 진실 소스(SSOT)이며 OpenAPI spec 은 `src/openapi.ts` 가 빌드 시점에 자동 생성합니다. 모델 변경 시 문서가 자동 동기화됩니다.
 
 ### 요청 예시
 

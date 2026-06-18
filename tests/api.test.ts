@@ -86,3 +86,70 @@ describe('POST /recommend', () => {
     expect(res.body).toEqual({ detail: 'not found' });
   });
 });
+
+describe('OpenAPI / Swagger documentation', () => {
+  test('GET /openapi.json returns valid OpenAPI 3.0 spec', async () => {
+    const res = await request(app).get('/openapi.json');
+    expect(res.status).toBe(200);
+    expect(res.body.openapi).toBe('3.0.0');
+    expect(res.body.info?.title).toContain('duty-backend');
+    expect(res.body.paths['/recommend']).toBeDefined();
+    expect(res.body.paths['/health']).toBeDefined();
+    expect(res.body.paths['/mock']).toBeDefined();
+    expect(res.body.components?.schemas?.UserProfile).toBeDefined();
+    expect(res.body.components?.schemas?.RecommendItem).toBeDefined();
+    expect(res.body.components?.schemas?.RecommendResponse).toBeDefined();
+  });
+
+  test('UserProfile 스키마가 핵심 필드(required + properties)를 포함', async () => {
+    const res = await request(app).get('/openapi.json');
+    const userProfile = res.body.components.schemas.UserProfile;
+    expect(userProfile.type).toBe('object');
+    const required: string[] = userProfile.required ?? [];
+    [
+      'age',
+      'annual_salary',
+      'income_type',
+      'invest_types',
+      'monthly_invest',
+      'has_isa',
+      'has_pension',
+      'has_irp',
+      'risk_tolerance',
+    ].forEach((key) => expect(required).toContain(key));
+    expect(userProfile.properties?.age?.type).toBe('integer');
+    expect(userProfile.properties?.age?.minimum).toBe(19);
+    expect(userProfile.properties?.age?.maximum).toBe(80);
+    expect(userProfile.properties?.invest_types?.type).toBe('array');
+    expect(userProfile.properties?.invest_types?.minItems).toBe(1);
+    expect(userProfile.properties?.invest_types?.maxItems).toBe(20);
+  });
+
+  test('RecommendResponse 스키마가 recommendations(max 5) + total_applicable + profile_summary 포함', async () => {
+    const res = await request(app).get('/openapi.json');
+    const resp = res.body.components.schemas.RecommendResponse;
+    expect(resp.type).toBe('object');
+    const required: string[] = resp.required ?? [];
+    ['recommendations', 'total_applicable', 'profile_summary'].forEach((key) =>
+      expect(required).toContain(key)
+    );
+    expect(resp.properties?.recommendations?.type).toBe('array');
+    expect(resp.properties?.recommendations?.maxItems).toBe(5);
+  });
+
+  test('GET /openapi.json POST /recommend 응답 422 스키마가 노출됨', async () => {
+    const res = await request(app).get('/openapi.json');
+    const post = res.body.paths['/recommend']?.post;
+    expect(post?.responses?.['200']).toBeDefined();
+    expect(post?.responses?.['422']).toBeDefined();
+    expect(post?.responses?.['500']).toBeDefined();
+  });
+
+  test('GET /docs Swagger UI HTML 페이지 응답', async () => {
+    const res = await request(app).get('/docs/');
+    expect(res.status).toBe(200);
+    expect(res.headers['content-type']).toMatch(/html/);
+    expect(res.text).toMatch(/swagger-ui/i);
+    expect(res.text).toContain('duty-backend API Docs');
+  });
+});
