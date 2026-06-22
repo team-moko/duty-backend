@@ -86,6 +86,8 @@ export class IsaRule extends BaseRule {
       score,
       expected_benefit_krw: expectedBenefitKrw,
       recommended_contribution_krw: fill * MAN_WON_TO_KRW,
+      annual_limit_krw: ISA_ANNUAL_MAX * MAN_WON_TO_KRW,
+      tax_rate_percent: Math.round(ISA_EXCESS_TAX_RATE * 1000) / 10,
       short_strategy: `ISA ${variant.shortLabel} 비과세 한도(${variant.taxFreeLimit}만원) 활용`,
       reason: `${variant.shortLabel} ISA 미보유. 연 수익 ${variant.taxFreeLimit}만원까지 비과세, 초과분 ${(
         ISA_EXCESS_TAX_RATE * 100
@@ -126,6 +128,8 @@ export class IsaToIrpRule extends BaseRule {
       score,
       expected_benefit_krw: expectedBenefitKrw,
       recommended_contribution_krw: ISA_TRANSFER_LIMIT * MAN_WON_TO_KRW,
+      annual_limit_krw: ISA_TRANSFER_LIMIT * MAN_WON_TO_KRW,
+      tax_rate_percent: Math.round(ISA_TRANSFER_CREDIT_RATE * 1000) / 10,
       short_strategy: 'ISA 만기금 IRP 전환 시 10% 추가 공제',
       reason: `ISA 만기금 IRP 이전 시 이전액의 10%(최대 ${ISA_TRANSFER_LIMIT}만원) 추가 세액공제.`,
       action: 'ISA 만기 시 IRP로 이전',

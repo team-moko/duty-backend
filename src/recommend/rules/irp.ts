@@ -35,6 +35,9 @@ export class IrpRule extends BaseRule {
       score,
       expected_benefit_krw: expectedBenefitKrw,
       recommended_contribution_krw: fill * MAN_WON_TO_KRW,
+      // IRP 단독 한도 700만원, 연금저축과 합산 900만원. UI 표시는 합산 한도 기준.
+      annual_limit_krw: 300 * MAN_WON_TO_KRW,
+      tax_rate_percent: Math.round(taxRate * 1000) / 10,
       short_strategy: `IRP 세액공제 ${(taxRate * 100).toFixed(1)}% 추가 활용`,
       reason: `연금저축+IRP 합산 한도 ${COMBINED_LIMIT}만원 중 ${combined}만원 납입 중. IRP ${fill}만원 추가 시 약 ${benefitManWon}만원 추가 환급.`,
       action: `IRP ${fill}만원 추가 납입`,

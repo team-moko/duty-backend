@@ -29,6 +29,7 @@ export class DividendSeparateTaxRule extends BaseRule {
 
   evaluate(profile: UserProfile): Candidate {
     const rate = this.bracket(profile.dividend_income);
+    const ratePercent = this.bracketPercent(profile.dividend_income);
     const { score, expectedBenefitKrw } = fixedScore();
     return {
       rule_id: 'dividend',
@@ -37,6 +38,8 @@ export class DividendSeparateTaxRule extends BaseRule {
       score,
       expected_benefit_krw: expectedBenefitKrw,
       recommended_contribution_krw: null,
+      annual_limit_krw: null,
+      tax_rate_percent: ratePercent,
       short_strategy: `고배당주 분리과세 ${rate} 활용 (종합과세 최고 49.5% 대비)`,
       reason: `연 배당소득 ${profile.dividend_income}만원. 2026~2028년 한시로 고배당 상장주 배당에 종합과세 대신 ${rate} 분리과세 적용. 종합과세(최고 49.5%) 대비 세율 대폭 절감.`,
       action:
@@ -50,5 +53,12 @@ export class DividendSeparateTaxRule extends BaseRule {
     if (dividendIncome <= DIVIDEND_BRACKET_MID) return '20%';
     if (dividendIncome <= DIVIDEND_BRACKET_HIGH) return '25%';
     return '30%';
+  }
+
+  private bracketPercent(dividendIncome: number): number {
+    if (dividendIncome <= DIVIDEND_BRACKET_LOW) return 14;
+    if (dividendIncome <= DIVIDEND_BRACKET_MID) return 20;
+    if (dividendIncome <= DIVIDEND_BRACKET_HIGH) return 25;
+    return 30;
   }
 }

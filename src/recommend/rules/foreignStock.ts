@@ -39,6 +39,8 @@ export class ForeignStockSplitSellRule extends BaseRule {
       score,
       expected_benefit_krw: expectedBenefitKrw,
       recommended_contribution_krw: null,
+      annual_limit_krw: null,
+      tax_rate_percent: Math.round(FOREIGN_TAX_RATE * 1000) / 10,
       short_strategy: '해외주식 연 250만원 이하 분산 매도로 양도세 절감',
       reason: `미실현 수익 ${unrealized}만원. 한 번에 매도 시 양도세 약 ${taxIfNowManWon}만원. 매년 ${FOREIGN_DEDUCTION}만원씩 ${years}년에 걸쳐 매도하면 양도세 0원 가능.`,
       action: `연간 매도 수익을 ${FOREIGN_DEDUCTION}만원 이하로 분산 (약 ${years}년 계획)`,
@@ -67,6 +69,8 @@ export class ForeignStockOffsetRule extends BaseRule {
       score,
       expected_benefit_krw: expectedBenefitKrw,
       recommended_contribution_krw: null,
+      annual_limit_krw: null,
+      tax_rate_percent: Math.round(FOREIGN_TAX_RATE * 1000) / 10,
       short_strategy: '손실 종목 매도 → 즉시 재매수로 과세표준 축소',
       reason:
         '수익 종목 매도 시 손실 종목을 함께 매도해 과세표준 축소 가능. 손실 종목은 즉시 재매수하여 보유 지속 가능 (세법상 문제 없음). 국내 비상장주식 손실도 해외주식 수익과 통산 가능.',
@@ -105,6 +109,8 @@ export class FamilyGiftRule extends BaseRule {
       score,
       expected_benefit_krw: expectedBenefitKrw,
       recommended_contribution_krw: null,
+      annual_limit_krw: null,
+      tax_rate_percent: null,
       short_strategy: '가족 증여로 취득가액 재설정 후 양도세 절감',
       reason: `미실현 수익 ${profile.foreign_stock_unrealized_profit}만원 보유 주식을 가족(${targets.join(
         ', '

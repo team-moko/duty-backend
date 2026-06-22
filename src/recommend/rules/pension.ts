@@ -36,6 +36,8 @@ export class PensionRule extends BaseRule {
       score,
       expected_benefit_krw: expectedBenefitKrw,
       recommended_contribution_krw: fill * MAN_WON_TO_KRW,
+      annual_limit_krw: PENSION_LIMIT * MAN_WON_TO_KRW,
+      tax_rate_percent: Math.round(taxRate * 1000) / 10,
       short_strategy: `연금저축 세액공제 ${(taxRate * 100).toFixed(1)}% 활용`,
       reason: `연봉 ${profile.annual_salary}만원 기준 세액공제율 ${(
         taxRate * 100

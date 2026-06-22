@@ -28,6 +28,8 @@ export class FinancialIncomeManagementRule extends BaseRule {
       score,
       expected_benefit_krw: expectedBenefitKrw,
       recommended_contribution_krw: null,
+      annual_limit_krw: null,
+      tax_rate_percent: null,
       short_strategy: '금융소득 종합과세 한도(2,000만원) 분산 관리',
       reason: `연 금융소득 ${profile.financial_income}만원으로 종합과세 기준 ${FIN_INCOME_THRESHOLD}만원 ${status}. 초과 시 최고 49.5% 세율 적용 가능.`,
       action:

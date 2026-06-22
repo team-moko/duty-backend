@@ -10,6 +10,8 @@ import {
   ComboProductChipSchema,
   ComboResponseSchema,
   ComboSchema,
+  LongTermAssumptionsSchema,
+  LongTermProjectionSchema,
   RecommendItemSchema,
   RecommendResponseSchema,
   UserProfileSchema,
@@ -69,8 +71,15 @@ registry.register('ComboProductChip', ComboProductChipSchema.openapi({
 registry.register('ComboDetailItem', ComboDetailItemSchema.openapi({
   description: '조합에 포함된 개별 상품의 상세 정보.',
 }));
+registry.register('LongTermAssumptions', LongTermAssumptionsSchema.openapi({
+  description: '10년 세후 기대수익 시뮬레이션 가정값.',
+}));
+registry.register('LongTermProjection', LongTermProjectionSchema.openapi({
+  description: '10년 누적 세후 기대수익 (환급 + 운용수익 절세분 합산) + 항목 분해.',
+}));
 registry.register('Combo', ComboSchema.openapi({
-  description: '추천 조합 1개 (여러 상품 묶음 + 환급률 + 한 줄 카피).',
+  description:
+    '추천 조합 1개 (여러 상품 묶음 + 환급률 + 한 줄 카피 + 종합 설명 bullets + 10년 시뮬레이션).',
 }));
 registry.register('ComboHeader', ComboHeaderSchema.openapi({
   description: '조합 추천 응답 헤더 (최대 환급률 등).',

@@ -1,6 +1,7 @@
 import request from 'supertest';
 import { recommendCombos } from '../src/recommend/comboEngine';
 import { createApp } from '../src/server';
+import type { UserProfile } from '../src/models';
 import { SCENARIOS, findScenario } from './scenarios';
 
 const app = createApp();
@@ -159,6 +160,140 @@ describe('POST /recommend/combos endpoint', () => {
     expect(res.body.components?.schemas?.ComboResponse).toBeDefined();
     expect(res.body.components?.schemas?.ComboHeader).toBeDefined();
     expect(res.body.components?.schemas?.ComboProductChip).toBeDefined();
+  });
+});
+
+describe('상세 페이지 데이터 — priority / hint / limit / tax_rate', () => {
+  test('각 조합의 details 가 priority 1..N 순서로 정렬됨', () => {
+    const sc = findScenario('S002');
+    const res = recommendCombos(sc.profile);
+    res.combos.forEach((combo) => {
+      combo.details.forEach((d, idx) => {
+        expect(d.priority).toBe(idx + 1);
+        expect(d.priority_hint.length).toBeGreaterThan(2);
+      });
+    });
+  });
+
+  test('세액공제 카테고리가 비과세보다 먼저 (시안: 연금 → IRP → ISA)', () => {
+    const sc = findScenario('S002');
+    const res = recommendCombos(sc.profile);
+    const best = res.combos[0]!;
+    const categories = best.details.map((d) => d.category);
+    const firstTaxCredit = categories.findIndex((c) => c === '세액공제');
+    const firstTaxFree = categories.findIndex((c) => c === '비과세·분리과세');
+    if (firstTaxCredit >= 0 && firstTaxFree >= 0) {
+      expect(firstTaxCredit).toBeLessThan(firstTaxFree);
+    }
+  });
+
+  test('annual_limit_krw / tax_rate_percent 는 핵심 룰에 채워짐', () => {
+    const sc = findScenario('S001'); // age 26, has neither pension nor ISA
+    const res = recommendCombos(sc.profile);
+    const all = res.combos.flatMap((c) => c.details);
+    const pension = all.find((d) => d.rule_id === 'pension');
+    expect(pension?.annual_limit_krw).toBe(6_000_000);
+    expect(pension?.tax_rate_percent).toBeGreaterThan(0);
+    const isa = all.find((d) => d.rule_id.startsWith('isa_'));
+    expect(isa?.annual_limit_krw).toBe(20_000_000);
+    expect(isa?.tax_rate_percent).toBe(9.9);
+  });
+});
+
+describe('Combo.justifications — 조합 단위 종합 설명', () => {
+  test('1~4개 bullet 생성, 의미 있는 내용', () => {
+    const sc = findScenario('S002');
+    const res = recommendCombos(sc.profile);
+    res.combos.forEach((combo) => {
+      expect(combo.justifications.length).toBeGreaterThan(0);
+      expect(combo.justifications.length).toBeLessThanOrEqual(4);
+      combo.justifications.forEach((j) =>
+        expect(j.length).toBeGreaterThan(10)
+      );
+    });
+  });
+
+  test('S001 (저소득 + 청년) — 세액공제 16.5% 언급 + 청년형 ISA 언급', () => {
+    const sc = findScenario('S001'); // age 26, salary 3600
+    const res = recommendCombos(sc.profile);
+    const allBullets = res.combos.flatMap((c) => c.justifications).join('\n');
+    expect(allBullets).toMatch(/16\.5%/);
+    expect(allBullets).toMatch(/청년형/);
+  });
+
+  test('S002 (foreign 큰 미실현 수익) — 분산매도 언급', () => {
+    const sc = findScenario('S002');
+    const res = recommendCombos(sc.profile);
+    const allBullets = res.combos.flatMap((c) => c.justifications).join('\n');
+    expect(allBullets).toMatch(/(분산 매도|250만원)/);
+  });
+});
+
+describe('Combo.long_term_projection — 10년 세후 기대수익', () => {
+  test('가정값(horizon 10년 / 5% 수익률 / 15.4% 일반세율) 노출', () => {
+    const sc = findScenario('S002');
+    const res = recommendCombos(sc.profile);
+    res.combos.forEach((combo) => {
+      const a = combo.long_term_projection.assumptions;
+      expect(a.horizon_years).toBe(10);
+      expect(a.assumed_return_rate_percent).toBe(5);
+      expect(a.normal_tax_rate_percent).toBe(15.4);
+      expect(a.isa_separate_tax_rate_percent).toBe(9.9);
+      expect(a.note.length).toBeGreaterThan(10);
+    });
+  });
+
+  test('gain_krw = breakdown 합산, 모두 0 이상', () => {
+    const sc = findScenario('S002');
+    const res = recommendCombos(sc.profile);
+    res.combos.forEach((combo) => {
+      const p = combo.long_term_projection;
+      const sum =
+        p.breakdown.cumulative_refund_krw +
+        p.breakdown.isa_tax_saving_krw +
+        p.breakdown.pension_tax_saving_krw;
+      expect(p.gain_krw).toBe(sum);
+      expect(p.gain_krw).toBeGreaterThanOrEqual(0);
+    });
+  });
+
+  test('cumulative_refund = expected_annual_refund × 10 (수학적 invariant)', () => {
+    const sc = findScenario('S002');
+    const res = recommendCombos(sc.profile);
+    res.combos.forEach((combo) => {
+      expect(combo.long_term_projection.breakdown.cumulative_refund_krw).toBe(
+        combo.expected_annual_refund_krw * 10
+      );
+    });
+  });
+
+  test('시안 가설 검산: 연봉 4,200만 / 연납입 900만 / 환급 148만원 케이스 → 약 1,800만원', () => {
+    // 시안의 BEST 조합(연금+IRP+청년형 ISA)에 가까운 단일 가상 케이스로 검증
+    const synthetic: UserProfile = {
+      age: 29,
+      annual_salary: 4200,
+      income_type: 'employee',
+      invest_types: ['domestic_stock', 'etf_domestic'],
+      monthly_invest: 100, // 연 1,200만원 투자
+      has_isa: false,
+      has_pension: false,
+      has_irp: false,
+      pension_contribution: 0,
+      irp_contribution: 0,
+      financial_income: 10,
+      risk_tolerance: 'medium',
+      has_spouse: false,
+      has_children: false,
+      has_minor_children: false,
+      foreign_stock_unrealized_profit: 0,
+      dividend_income: 0,
+      holds_high_dividend: false,
+    };
+    const res = recommendCombos(synthetic);
+    const best = res.combos[0]!;
+    // 시안의 1,840만원 ± 30% 범위 (단순 모델이므로 정확 일치 불가)
+    expect(best.long_term_projection.gain_krw).toBeGreaterThan(13_000_000);
+    expect(best.long_term_projection.gain_krw).toBeLessThan(25_000_000);
   });
 });
 

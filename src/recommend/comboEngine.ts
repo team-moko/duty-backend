@@ -4,9 +4,24 @@ import type {
   ComboDetailItem,
   ComboProductChip,
   ComboResponse,
+  LongTermProjection,
   RuleId,
   UserProfile,
 } from '../models';
+import {
+  ASSUMED_RETURN_RATE,
+  CATEGORY_PRIORITY,
+  CATEGORY_PRIORITY_HINT,
+  FIN_INCOME_THRESHOLD,
+  HORIZON_YEARS,
+  ISA_SEPARATE_TAX_RATE,
+  ISA_YOUTH_AGE_MAX,
+  LONG_TERM_NOTE,
+  NORMAL_TAX_RATE,
+  SALARY_THRESHOLD,
+  TAX_RATE_HIGH,
+  TAX_RATE_LOW,
+} from './constants';
 import { buildProfileSummary, evaluateAllRules } from './engine';
 
 /**
@@ -28,17 +43,9 @@ const CHIP_LABEL: Record<RuleId, string> = {
   cap_gains: '종합과세 관리',
 };
 
-/**
- * 조합 프리셋 정의.
- * 각 프리셋이 어떤 룰 부분집합을 묶어 하나의 "절세 조합"으로 노출할지 결정합니다.
- * (단일 진실 소스 — 후보 추가/제거 시 이 배열만 수정하면 됩니다.)
- */
 interface ComboPreset {
-  /** 디버깅용. 응답의 label 은 정렬 후 자동 부여(BEST = rank 1) */
   key: string;
-  /** 조합 후보가 만족시킬 룰 ID 집합 */
   pick: (candidates: Candidate[]) => Candidate[];
-  /** 한 줄 카피 — chips 기반 동적 생성 */
   shortStrategy: (chips: ComboProductChip[]) => string;
 }
 
@@ -78,15 +85,6 @@ const PRESETS: ComboPreset[] = [
   },
 ];
 
-/**
- * 사용자 프로필을 받아 조합 추천 응답을 생성합니다.
- * 절차:
- *   1) 모든 룰 평가 → 적용 가능한 Candidate 리스트
- *   2) 각 프리셋으로 부분집합 추출
- *   3) 동일 ruleIds 집합은 dedup
- *   4) refund_rate_percent desc 정렬, 상위 5개에 rank/label 부여
- *   5) 헤더 (max_refund_rate, max_annual_refund, applicable_combo_count) 산출
- */
 export function recommendCombos(profile: UserProfile): ComboResponse {
   const allCandidates = evaluateAllRules(profile);
   const profileSummary = buildProfileSummary(profile);
@@ -119,26 +117,32 @@ export function recommendCombos(profile: UserProfile): ComboResponse {
   }
 
   const unrankedCombos: Omit<Combo, 'rank' | 'label'>[] = drafts.map((draft) => {
-    const { preset } = draft;
-    const chips: ComboProductChip[] = draft.candidates.map((c) => ({
+    const { preset, candidates } = draft;
+    const sortedCandidates = sortByPriority(candidates);
+
+    const chips: ComboProductChip[] = sortedCandidates.map((c) => ({
       rule_id: c.rule_id,
       product: CHIP_LABEL[c.rule_id] ?? c.product,
     }));
-    const details: ComboDetailItem[] = draft.candidates.map((c) => ({
+    const details: ComboDetailItem[] = sortedCandidates.map((c, idx) => ({
       rule_id: c.rule_id,
       product: c.product,
       category: c.category,
+      priority: idx + 1,
+      priority_hint: CATEGORY_PRIORITY_HINT[c.category] ?? c.short_strategy,
       expected_benefit_krw: c.expected_benefit_krw,
       recommended_contribution_krw: c.recommended_contribution_krw,
+      annual_limit_krw: c.annual_limit_krw,
+      tax_rate_percent: c.tax_rate_percent,
       reason: c.reason,
       action: c.action,
       warning: c.warning,
     }));
-    const totalRefund = draft.candidates.reduce(
+    const totalRefund = sortedCandidates.reduce(
       (acc, c) => acc + (c.expected_benefit_krw ?? 0),
       0
     );
-    const totalContribution = draft.candidates.reduce(
+    const totalContribution = sortedCandidates.reduce(
       (acc, c) => acc + (c.recommended_contribution_krw ?? 0),
       0
     );
@@ -146,12 +150,18 @@ export function recommendCombos(profile: UserProfile): ComboResponse {
       totalContribution > 0
         ? Math.round((totalRefund / totalContribution) * 1000) / 10
         : null;
+
     return {
       products: chips,
       refund_rate_percent: refundRate,
       expected_annual_refund_krw: totalRefund,
       recommended_contribution_krw: totalContribution,
       short_strategy: preset.shortStrategy(chips),
+      justifications: buildJustifications(profile, sortedCandidates),
+      long_term_projection: buildLongTermProjection(
+        sortedCandidates,
+        totalRefund
+      ),
       details,
     };
   });
@@ -181,11 +191,138 @@ export function recommendCombos(profile: UserProfile): ComboResponse {
 }
 
 /**
- * 조합 정렬 비교 함수.
- * 1순위: refund_rate_percent desc (null 은 가장 뒤로)
- * 2순위: expected_annual_refund_krw desc (절대 환급액)
- * 3순위: products.length desc (구성 상품 많을수록 먼저)
+ * 같은 조합 안에서 details 표시 순서를 카테고리 우선순위로 정렬.
+ * 같은 카테고리 안에서는 expected_benefit 큰 순서 (예: 연금저축 > IRP).
  */
+function sortByPriority(candidates: Candidate[]): Candidate[] {
+  return [...candidates].sort((a, b) => {
+    const pa = CATEGORY_PRIORITY[a.category] ?? 99;
+    const pb = CATEGORY_PRIORITY[b.category] ?? 99;
+    if (pa !== pb) return pa - pb;
+    return (b.expected_benefit_krw ?? 0) - (a.expected_benefit_krw ?? 0);
+  });
+}
+
+/**
+ * "왜 이 조합이 유리한가요?" — 조합 특성 기반 3~4 bullet 자동 생성.
+ * 시안의 3 bullet (세액공제율 / 청년형 ISA / 종합 효과) 패턴을 재현.
+ */
+function buildJustifications(
+  profile: UserProfile,
+  candidates: Candidate[]
+): string[] {
+  const bullets: string[] = [];
+  const ruleIds = new Set(candidates.map((c) => c.rule_id));
+
+  const hasTaxCredit = ruleIds.has('pension') || ruleIds.has('irp');
+  if (hasTaxCredit) {
+    const isLowBracket = profile.annual_salary <= SALARY_THRESHOLD;
+    const ratePercent = isLowBracket ? TAX_RATE_LOW * 100 : TAX_RATE_HIGH * 100;
+    const bracketLabel = isLowBracket
+      ? `총급여 ${SALARY_THRESHOLD}만원 이하`
+      : `총급여 ${SALARY_THRESHOLD}만원 초과`;
+    bullets.push(
+      `현재 연봉 구간(${bracketLabel})에서는 연금저축·IRP 세액공제율이 ${ratePercent.toFixed(1)}%로 적용돼 환급 효과가 큽니다.`
+    );
+  }
+
+  if (ruleIds.has('isa_youth')) {
+    bullets.push(
+      `만 19~${ISA_YOUTH_AGE_MAX}세 청년형 ISA는 일반형(200만원) 대비 비과세 한도가 두 배(400만원)로 늘어나 같은 납입액에도 절세 효과가 큽니다.`
+    );
+  } else if (ruleIds.has('isa_welfare')) {
+    bullets.push(
+      '서민형 ISA는 비과세 한도 400만원으로 일반형(200만원) 대비 두 배 — 같은 납입액에도 절세 효과가 큽니다.'
+    );
+  } else if (ruleIds.has('isa_general')) {
+    bullets.push(
+      'ISA 계좌 내 손익통산으로 종목별 손실을 수익과 상계해 세금을 추가로 줄일 수 있습니다.'
+    );
+  }
+
+  if (ruleIds.has('foreign_split')) {
+    bullets.push(
+      '해외주식 미실현 수익을 매년 250만원(기본공제) 이하로 분산 매도하면 양도세를 사실상 0원에 근접시킬 수 있습니다.'
+    );
+  }
+
+  if (ruleIds.has('family_gift')) {
+    bullets.push(
+      '배우자·자녀 증여(10년 합산 비과세 한도 활용) 후 매도하면 취득가액이 재설정돼 양도차익 자체가 줄어듭니다.'
+    );
+  }
+
+  if (
+    ruleIds.has('dividend') ||
+    profile.financial_income >= FIN_INCOME_THRESHOLD
+  ) {
+    bullets.push(
+      '금융소득 종합과세(최고 49.5%) 위험 구간이라 분리과세 상품 비중을 늘리는 것이 효과적입니다.'
+    );
+  }
+
+  if (bullets.length === 0) {
+    bullets.push(
+      '현재 프로필 기준 적용 가능한 절세 전략을 묶어 환급 효과를 높인 조합입니다.'
+    );
+  }
+
+  return bullets.slice(0, 4);
+}
+
+/**
+ * 10년 세후 기대수익 시뮬레이션.
+ *
+ * 단순 모델:
+ *   - 누적 환급 = 연 환급액 × 10년 (매년 동일 추가 납입 가정)
+ *   - ISA 운용수익 절세 = ISA 납입액 × 5%/년 × 평균 보유기간 × (15.4 - 9.9)%
+ *   - 연금/IRP 운용수익 절세 = 납입액 × 5%/년 × 평균 보유기간 × 15.4%
+ *     (인출 시 연금소득세 5.5% 별도 발생하지만 이 단순 모델에서는 무시)
+ *
+ * 평균 보유기간 = (1 + 2 + ... + 10) / 10 = 5.5년
+ */
+function buildLongTermProjection(
+  candidates: Candidate[],
+  totalAnnualRefundKrw: number
+): LongTermProjection {
+  const avgHoldingYears = (HORIZON_YEARS + 1) / 2;
+  const cumulativeRefund = totalAnnualRefundKrw * HORIZON_YEARS;
+
+  const isaContribution = candidates
+    .filter((c) => c.rule_id.startsWith('isa_'))
+    .reduce((acc, c) => acc + (c.recommended_contribution_krw ?? 0), 0);
+  const isaCumulativeReturn =
+    isaContribution * ASSUMED_RETURN_RATE * avgHoldingYears;
+  const isaTaxSaving = Math.round(
+    isaCumulativeReturn * (NORMAL_TAX_RATE - ISA_SEPARATE_TAX_RATE)
+  );
+
+  const pensionContribution = candidates
+    .filter((c) => c.rule_id === 'pension' || c.rule_id === 'irp')
+    .reduce((acc, c) => acc + (c.recommended_contribution_krw ?? 0), 0);
+  const pensionCumulativeReturn =
+    pensionContribution * ASSUMED_RETURN_RATE * avgHoldingYears;
+  const pensionTaxSaving = Math.round(pensionCumulativeReturn * NORMAL_TAX_RATE);
+
+  const gain = cumulativeRefund + isaTaxSaving + pensionTaxSaving;
+
+  return {
+    gain_krw: gain,
+    breakdown: {
+      cumulative_refund_krw: cumulativeRefund,
+      isa_tax_saving_krw: isaTaxSaving,
+      pension_tax_saving_krw: pensionTaxSaving,
+    },
+    assumptions: {
+      horizon_years: HORIZON_YEARS,
+      assumed_return_rate_percent: ASSUMED_RETURN_RATE * 100,
+      normal_tax_rate_percent: NORMAL_TAX_RATE * 100,
+      isa_separate_tax_rate_percent: ISA_SEPARATE_TAX_RATE * 100,
+      note: LONG_TERM_NOTE,
+    },
+  };
+}
+
 function compareCombos(
   a: Omit<Combo, 'rank' | 'label'>,
   b: Omit<Combo, 'rank' | 'label'>
