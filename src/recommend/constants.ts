@@ -32,6 +32,13 @@ export const GIFT_MIN_UNREALIZED = 500;
 
 export const ISA_TRANSFER_CREDIT_RATE = 0.1;
 
+/**
+ * 청년형 ISA (만 19~34세 대상).
+ * 비과세 한도 400만원 (서민형과 동일 수준), 연 납입 한도는 일반 ISA와 동일 2,000만원.
+ */
+export const ISA_YOUTH_AGE_MAX = 34;
+export const ISA_YOUTH_LIMIT = 400;
+
 export const DIVIDEND_BRACKET_LOW = 2000;
 export const DIVIDEND_BRACKET_MID = 30000;
 export const DIVIDEND_BRACKET_HIGH = 500000;

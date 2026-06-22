@@ -31,10 +31,13 @@ export class DividendSeparateTaxRule extends BaseRule {
     const rate = this.bracket(profile.dividend_income);
     const { score, expectedBenefitKrw } = fixedScore();
     return {
+      rule_id: 'dividend',
       product: '고배당주 배당소득 분리과세',
       category: '배당소득 분리과세',
       score,
       expected_benefit_krw: expectedBenefitKrw,
+      recommended_contribution_krw: null,
+      short_strategy: `고배당주 분리과세 ${rate} 활용 (종합과세 최고 49.5% 대비)`,
       reason: `연 배당소득 ${profile.dividend_income}만원. 2026~2028년 한시로 고배당 상장주 배당에 종합과세 대신 ${rate} 분리과세 적용. 종합과세(최고 49.5%) 대비 세율 대폭 절감.`,
       action:
         '배당성향 40% 이상 또는 전년 대비 배당 10% 이상 증가 상장주 중심 포트폴리오 구성 / 은행·통신 등 전통 고배당 업종 비중 확대',

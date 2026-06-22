@@ -63,13 +63,15 @@ describe('PROMPT.md required scenario assertions', () => {
     expect(products(result.recommendations)).toContain('가족 증여 후 매도');
   });
 
-  test('S007 저소득 직장인 — ISA 서민형 포함', () => {
+  test('S007 저소득 직장인 (age 29) — 청년형 ISA 포함 (만 19~34 우선)', () => {
     const sc = findScenario('S007');
     const result = recommend(sc.profile);
     const isaItem = result.recommendations.find((r) =>
-      r.product.startsWith('ISA(')
+      r.product.includes('ISA')
     );
-    expect(isaItem?.product).toBe('ISA(서민형)');
+    // age 29 + 저소득(3,000만원) — 청년형 ISA 자격(19~34) + 서민형 자격(연봉 3,600 이하) 둘 다 만족.
+    // 청년형이 우선 적용됨 (실제 세법상 한 명이 둘 다 가입 불가, 청년형이 더 큰 비과세 한도 + 가입 가능 연령 제한).
+    expect(isaItem?.product).toBe('청년형 ISA');
   });
 });
 

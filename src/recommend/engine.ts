@@ -49,15 +49,43 @@ export function recommend(profile: UserProfile): RecommendResponse {
 
   applicable.sort((a, b) => b.score - a.score);
 
+  // Candidate 는 v2 조합 엔진용 필드(rule_id, recommended_contribution_krw,
+  // short_strategy)를 포함하므로 v1 응답으로 매핑할 때는 RecommendItem 필드만
+  // 명시적으로 picking 합니다. spread 사용 시 v1 응답 contract 가 누설될 수 있음.
   const top5: RecommendItem[] = applicable
     .slice(0, 5)
-    .map((c, idx): RecommendItem => ({ rank: idx + 1, ...c }));
+    .map((c, idx): RecommendItem => ({
+      rank: idx + 1,
+      product: c.product,
+      category: c.category,
+      score: c.score,
+      expected_benefit_krw: c.expected_benefit_krw,
+      reason: c.reason,
+      action: c.action,
+      warning: c.warning,
+    }));
 
   return {
     recommendations: top5,
     total_applicable: applicable.length,
     profile_summary: buildProfileSummary(profile),
   };
+}
+
+/**
+ * 조합 엔진용 — 모든 적용 가능한 룰의 평가 결과(Candidate)를 점수 순으로 반환합니다.
+ * v1 의 recommend() 가 Top 5 로 잘라 RecommendItem 으로 변환하는 것과 달리,
+ * 조합 엔진은 전체 후보가 필요하므로 별도 헬퍼로 노출합니다.
+ */
+export function evaluateAllRules(profile: UserProfile): Candidate[] {
+  const applicable: Candidate[] = [];
+  for (const rule of RULES) {
+    if (rule.isApplicable(profile)) {
+      applicable.push(rule.evaluate(profile));
+    }
+  }
+  applicable.sort((a, b) => b.score - a.score);
+  return applicable;
 }
 
 const INCOME_LABEL: Record<UserProfile['income_type'], string> = {

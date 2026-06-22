@@ -82,4 +82,81 @@ export const RecommendResponseSchema = z.object({
 });
 export type RecommendResponse = z.infer<typeof RecommendResponseSchema>;
 
-export type Candidate = Omit<RecommendItem, 'rank'>;
+/**
+ * 룰 식별자. 조합 엔진이 룰 종류별 그룹화 / 중복 제거 / 칩 라벨링에 사용합니다.
+ * (ISA는 사용자 프로필별로 하나만 fire 하지만 별도 ID로 식별 — 청년형/서민형/일반형 구분)
+ */
+export const RuleIdValues = [
+  'pension',
+  'irp',
+  'isa_general',
+  'isa_welfare',
+  'isa_youth',
+  'isa_to_irp',
+  'foreign_split',
+  'foreign_offset',
+  'family_gift',
+  'etf',
+  'dividend',
+  'cap_gains',
+] as const;
+export type RuleId = (typeof RuleIdValues)[number];
+
+/**
+ * 룰 내부 평가 결과. v1 응답(RecommendItem)에는 노출되지 않는 필드(rule_id,
+ * recommended_contribution_krw, short_strategy)가 포함되어 v2 조합 엔진에 활용됩니다.
+ * v1 응답 매핑 시 명시적으로 필드를 picking 합니다 (engine.ts).
+ */
+export type Candidate = Omit<RecommendItem, 'rank'> & {
+  rule_id: RuleId;
+  recommended_contribution_krw: number | null;
+  short_strategy: string;
+};
+
+// ──────────────────────────────────────────────────────────────────────
+// v2 — 조합(Combo) 추천 응답
+// ──────────────────────────────────────────────────────────────────────
+
+export const ComboProductChipSchema = z.object({
+  rule_id: z.string(),
+  product: z.string(),
+});
+export type ComboProductChip = z.infer<typeof ComboProductChipSchema>;
+
+export const ComboDetailItemSchema = z.object({
+  rule_id: z.string(),
+  product: z.string(),
+  category: z.string(),
+  expected_benefit_krw: z.number().int().nullable(),
+  recommended_contribution_krw: z.number().int().nullable(),
+  reason: z.string(),
+  action: z.string(),
+  warning: z.string().nullable(),
+});
+export type ComboDetailItem = z.infer<typeof ComboDetailItemSchema>;
+
+export const ComboSchema = z.object({
+  rank: z.number().int().min(1).max(5),
+  label: z.string().nullable(),
+  products: z.array(ComboProductChipSchema).min(1),
+  refund_rate_percent: z.number().nullable(),
+  expected_annual_refund_krw: z.number().int().min(0),
+  recommended_contribution_krw: z.number().int().min(0),
+  short_strategy: z.string(),
+  details: z.array(ComboDetailItemSchema).min(1),
+});
+export type Combo = z.infer<typeof ComboSchema>;
+
+export const ComboHeaderSchema = z.object({
+  max_refund_rate_percent: z.number().nullable(),
+  max_annual_refund_krw: z.number().int().min(0),
+  applicable_combo_count: z.number().int().min(0),
+});
+export type ComboHeader = z.infer<typeof ComboHeaderSchema>;
+
+export const ComboResponseSchema = z.object({
+  combos: z.array(ComboSchema).max(5),
+  header: ComboHeaderSchema,
+  profile_summary: z.string(),
+});
+export type ComboResponse = z.infer<typeof ComboResponseSchema>;

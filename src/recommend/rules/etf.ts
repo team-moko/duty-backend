@@ -24,10 +24,13 @@ export class EtfOptimizationRule extends BaseRule {
     const tips = this.buildTips(profile);
     const { score, expectedBenefitKrw } = fixedScore();
     return {
+      rule_id: 'etf',
       product: 'ETF 유형별 세금 최적화',
       category: '구조적 절세',
       score,
       expected_benefit_krw: expectedBenefitKrw,
+      recommended_contribution_krw: null,
+      short_strategy: 'ETF 상장 위치별 세금 구조 활용',
       reason:
         'ETF는 상장 위치(국내/해외)와 투자 대상(국내주식/해외주식)에 따라 세금 구조가 달라집니다. 국내주식형 ETF: 매매차익 비과세. 국내상장 해외ETF: 매매차익·분배금 모두 배당소득세 15.4%. 해외상장 ETF: 매매차익 양도소득세 22%.',
       action: tips.join(' / '),

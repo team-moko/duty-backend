@@ -22,10 +22,13 @@ export class FinancialIncomeManagementRule extends BaseRule {
     const { score, expectedBenefitKrw } = fixedScore();
 
     return {
+      rule_id: 'cap_gains',
       product: '금융소득 종합과세 관리',
       category: '종합소득 관리',
       score,
       expected_benefit_krw: expectedBenefitKrw,
+      recommended_contribution_krw: null,
+      short_strategy: '금융소득 종합과세 한도(2,000만원) 분산 관리',
       reason: `연 금융소득 ${profile.financial_income}만원으로 종합과세 기준 ${FIN_INCOME_THRESHOLD}만원 ${status}. 초과 시 최고 49.5% 세율 적용 가능.`,
       action:
         '분리과세 상품 비중 확대(ISA 초과분 9.9%) / 2026년부터 고배당 분리과세 적극 활용 / 가족 명의 분산 투자 / 세무사 상담 권장',

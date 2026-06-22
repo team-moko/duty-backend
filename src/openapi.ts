@@ -5,6 +5,11 @@ import {
 } from '@asteasolutions/zod-to-openapi';
 import { z } from 'zod';
 import {
+  ComboDetailItemSchema,
+  ComboHeaderSchema,
+  ComboProductChipSchema,
+  ComboResponseSchema,
+  ComboSchema,
   RecommendItemSchema,
   RecommendResponseSchema,
   UserProfileSchema,
@@ -58,6 +63,21 @@ registry.register('RecommendItem', RecommendItemSchema.openapi({
 registry.register('RecommendResponse', RecommendResponseSchema.openapi({
   description: '추천 결과 응답 (Top 5 + 프로필 요약).',
 }));
+registry.register('ComboProductChip', ComboProductChipSchema.openapi({
+  description: '조합 내 상품 칩 (rule_id + 표시명).',
+}));
+registry.register('ComboDetailItem', ComboDetailItemSchema.openapi({
+  description: '조합에 포함된 개별 상품의 상세 정보.',
+}));
+registry.register('Combo', ComboSchema.openapi({
+  description: '추천 조합 1개 (여러 상품 묶음 + 환급률 + 한 줄 카피).',
+}));
+registry.register('ComboHeader', ComboHeaderSchema.openapi({
+  description: '조합 추천 응답 헤더 (최대 환급률 등).',
+}));
+registry.register('ComboResponse', ComboResponseSchema.openapi({
+  description: '조합 추천 응답 (Top 5 조합 + 헤더 + 프로필 요약).',
+}));
 
 registry.registerPath({
   method: 'post',
@@ -82,6 +102,51 @@ registry.registerPath({
       content: {
         'application/json': {
           schema: RecommendResponseSchema,
+        },
+      },
+    },
+    422: {
+      description: '입력 유효성 검증 실패 (Zod)',
+      content: {
+        'application/json': {
+          schema: ValidationErrorSchema,
+        },
+      },
+    },
+    500: {
+      description: '서버 내부 오류',
+      content: {
+        'application/json': {
+          schema: GenericErrorSchema,
+        },
+      },
+    },
+  },
+});
+
+registry.registerPath({
+  method: 'post',
+  path: '/recommend/combos',
+  summary: '절세 상품 조합(Combo) Top 5 추천',
+  description:
+    '사용자 프로필을 입력받아 의미 있는 조합 단위로 절세 전략 Top 5를 환급률 높은 순으로 반환합니다. 각 조합은 상품 칩 / 예상 환급액 / 예상 환급률 / 한 줄 전략 카피를 포함합니다.',
+  tags: ['recommend'],
+  request: {
+    body: {
+      required: true,
+      content: {
+        'application/json': {
+          schema: UserProfileSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      description: '조합 추천 결과',
+      content: {
+        'application/json': {
+          schema: ComboResponseSchema,
         },
       },
     },
